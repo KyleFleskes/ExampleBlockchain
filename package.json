@@ -26,5 +26,13 @@
     "express": "^4.17.1",
     "uuid": "^7.0.3",
     "ws": "^7.2.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KyleFleskes/ExampleBlockchain.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KyleFleskes/ExampleBlockchain/issues"
+  },
+  "homepage": "https://github.com/KyleFleskes/ExampleBlockchain#readme"
 }
