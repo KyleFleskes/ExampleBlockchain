@@ -23,8 +23,10 @@ class Wallet
 		return this.keyPair.sign(datahash);
 	}
 
-	createTransaction(recipient, amount, transactionPool)
+	createTransaction(recipient, amount, blockchain, transactionPool)
 	{
+		this.balance = this.calculateBalance(blockchain);
+
 		if (amount > this.balance)
 		{
 			console.log(`Amount: ${amount} exceceds current balance: ${this.balance}`);
@@ -45,7 +47,58 @@ class Wallet
 
 		return transaction;
 	}
+	
+	calculateBalance(blockchain)
+	{
+		let balance = this.balance;
+		let transactions = [];
+		
+		//look at each transaction in every block on the blockchain and store them in transactions.
+		blockchain.chain.forEach(block => block.data.forEach(transaction => {
+			transactions.push(transaction);
+		}));
+		
+		//filter out all transactions not relating to wallet.
+		const walletInputTs = transactions
+			.filter(transaction => transaction.input.address === this.publicKey);
+		
+		let startTime = 0;
 
+		//if there are any relevent transaction to this wallet.
+		if (walletInputTs.length > 0)
+		{
+
+			//get the most recent transaction for this wallet.
+			const recentInputT = walletInputTs.reduce(
+				(prev, current) => prev.input.timestamp > current.input.timestamp ? prev : current
+			);
+			
+			//the current balance last recorded on the blockchain.
+			balance = recentInputT.outputs.find(output => output.address === this.publicKey).amount;
+			
+			startTime = recentInputT.input.timestamp;
+		}
+		
+		//add together all transaction amounts after last recorded transaction on blockchain.
+		transactions.forEach(transaction => {
+			
+			//if transaction comes after last recorded transaction on blockchain
+			if (transaction.input.timestamp > startTime)
+			{
+				transaction.outputs.find(output => {
+
+					//if transaction amount goes to this current wallet, adds its amount to it.
+					if (output.address === this.publicKey)
+					{
+						balance += output.amount;
+					}
+				});
+			}
+		});
+
+		return balance;
+	}
+	
 	static blockchainWallet()
 	{
 		const blockchainWallet = new this();
