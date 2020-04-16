@@ -7,7 +7,9 @@
     "test": "jest --watchAll",
     "dev-test": "nodemon dev-test",
     "start": "node ./app",
-    "dev": "nodemon ./app"
+    "dev": "nodemon ./app",
+    "install": "npm init -y && npm install nodemon --save-dev && npm install crypto-js --save && npm install jest --save-dev && npm install express --save && npm install body-parser --save && npm install ws --save && npm install elliptic --save && npm install uuid --save",
+    "uninstall": "npm uninstall uuid && npm uninstall elliptic && npm uninstall ws && npm uninstall body-parser && npm uninstall express && npm uninstall jest && npm uninstall crypto-js && npm uninstall nodemon"
   },
   "jest": {
     "testEnvironment": "node"
@@ -16,8 +18,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^25.2.7",
-    "nodemon": "^2.0.2"
+    "jest": "^25.3.0",
+    "nodemon": "^2.0.3"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
