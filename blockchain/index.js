@@ -1,4 +1,6 @@
 /**	
+ * 	
+ *
  * 	index.js
  *
  * 	This is the default file for the blockchain directory.
@@ -6,8 +8,8 @@
  * 	meaning that is this the struture for which 'blocks' 
  * 	are added, validated, and replaced if needed. 
  * 	
- *	Author: Kyle Fleskes
- *	Lasted Updated: 4/9/2020
+ * 	Author: Kyle Fleskes
+ * 	Lasted Updated: 4/17/2020
  *
  */
 
@@ -41,12 +43,26 @@ class Blockchain
 
         	return block;
     	}
-
+	
+	/**
+	 * isvalidChain looks through the provided blockchain and checks to 
+	 * see if data is consistent and it is connected properly.
+	 *
+	 * param: 
+	 * 	chain - the blockchain to be varified.
+	 *
+	 * return:
+	 * 	true - the chain is valid.
+	 * 	false - the isn't valid.
+	 *
+	 */
     	isValidChain(chain)
     	{	
+		//if the first block in the chain isnt the genesis block.
         	if (JSON.stringify(chain[0]) !== JSON.stringify(Block.genesis()))
             		return false;
-        
+        	
+		//loop through the whole chain
         	for (let i = 1; i < chain.length; i++)
         	{
             		const block = chain[i];
@@ -62,14 +78,24 @@ class Blockchain
 
         	return true;
 	}
-
+	
+	/**
+	 * replaceChain decided whether or not to replace the current chain 
+	 * with the new chain in the parameter.
+	 *
+	 * param:
+	 * 	newChain - the new proposed chain. 
+	 */
     	replaceChain(newChain)
     	{
+		//if the provided chain is shorter than current chain.
         	if (newChain.length <= this.chain.length)
         	{
             		console.log('The received chain is not longer than the current chain.');
             		return;
         	}
+
+		//if it is longer, but not valid.
         	else if (!this.isValidChain(newChain))
         	{
             		console.log('The received chain is not valid.');
