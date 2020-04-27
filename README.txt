@@ -53,7 +53,7 @@ need before we get started:
 
 	npm run test
 
-	You should see some tests run with 5 passing test suites with 31 passing indivual tests.
+	You should see some tests run with 5 passing test suites with 31 passing individual tests.
 
 	***if installion script didn't work please try installing the 
 	packages manually using the following commands into the command line:
