@@ -1,5 +1,15 @@
-Welcome to Our honey blockchain! There are a few things you 
-need before we get started:
+Welcome to Our honey blockchain! This is a proof of concept implemenation
+of a blockchain to track honey supplychains. Currently its is only a 
+generic system, but more features are on the way!
+
+
+____Contents of this Readme:____
+1. Installation Guide
+2. Usage guide
+
+
+
+____Installation Guide:____
 
 1. You will need some kind of **command line application**;
 	I'd recommend **Iterm2** for MacOS, or **Git Bash** for Windows, 
@@ -67,3 +77,80 @@ need before we get started:
 		npm install ws --save
 		npm install elliptic --save
 		npm install uuid --save
+
+
+_____Usage Guide:______
+
+1. To start the sever if you are the first user type:
+	
+	npm run start
+
+	this defaults to HTTP_PORT=3001 and P2P_PORT=5001
+
+   If you are connecting to an already exisiting p2p-server type:
+   	
+	HTTP_PORT=[insert your HTTP port # here] P2P_PORT=[insert your p2p port # here] PEERS=[insert peer's port # here] npm run dev
+
+   	An example with one other peer:
+		
+		HTTP_PORT=3002 P2P_PORT=5002 PEERS=ws://localHost:5001 npm run dev
+
+	An example with two other peers:
+		
+		HTTP_PORT=3003 P2P_PORT=5003 PEERS=ws://localHost:5001,ws://localHost:5002 npm run dev
+
+   	Please note the spaces!!!!!
+
+	Keep in mind this process of manually tpying in these commands quickly become unrealistic,
+	this is a needed area of improvement.
+
+2. Use PostMan of equivilent software to interaction with the p2p-server.
+
+	List of commands:
+		
+		GET localhost:[HTTP_PORT #]/blocks
+			
+			Displays the blockchain on the p2pserver.
+		
+		GET localhost:[HTTP_PORT #]/transactions
+
+			Displays the transactions in the transaction pool.
+
+		GET localhost:[HTTP_PORT #]/mine-transactions
+			
+			Adds the transaction pool to the blockchain and clears the transaction pool.
+		
+		GET localhost:[HTTP_PORT #]/public-key
+			
+			Displays the public key of the HTTP port on the p2pserver.
+
+		POST localhost:[HTTP_PORT #]/mine
+
+			Adds a new block to the chain with the provided information.
+
+			How to format data being added:
+				
+				make sure body of post request is RAW and JSON.
+				
+				Types data like so:
+
+				{
+					"data": "Yoo Hoo!"
+				}
+		
+		POST localhost:[HTTP_PORT #]/transact
+
+			Adds a new transaction to the transaction pool based on the information provided.
+
+			How to format data being added:
+				
+				make sure body of post request is RAW and JSON.
+				
+				Types data like so:
+
+				{
+					"recipient": "[Insert recipient's public key]",
+					"amount": 50
+				}
+
+
