@@ -1,3 +1,13 @@
+/**
+ *	index.js
+ *	
+ *	Provides the p2pserver with a series of commands 
+ *	to interact with the blockchain and transaction pool.
+ *
+ *	Author: Kyle Fleskes
+ *	Last Updated: 4/27/20
+ */
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const Blockchain = require('../blockchain');
@@ -20,10 +30,12 @@ const miner = new Miner(bc, tp, wallet, p2pServer);
 
 app.use(bodyParser.json());
 
+//the command for printing out the blockchain to the console.
 app.get('/blocks', (req, res) => {
     res.json(bc.chain);    
 });
 
+//the command for adding blocks to the blockchain.
 app.post('/mine', (req, res) => {
 	const block = bc.addBlock(req.body.data);
 	console.log(`New block added ${block.toString()}`);
@@ -33,10 +45,12 @@ app.post('/mine', (req, res) => {
 	res.redirect('/blocks');
 });
 
+//the command for printing out the transactions in the transaction pool.
 app.get('/transactions', (req, res) => {
   	res.json(tp.transactions);
 });
 
+//the command for adding a transaction to the transaction pool.
 app.post('/transact', (req, res) => {
 	const { recipient, amount } = req.body;
 	const transaction = wallet.createTransaction(recipient, amount, bc, tp);
@@ -44,12 +58,14 @@ app.post('/transact', (req, res) => {
 	res.redirect('/transactions');
 });
 
+//the command for adding the transaction pool to the blockchain.
 app.get('/mine-transactions', (req, res) => {
 	const block = miner.mine();
 	console.log(`New Block added: ${block.toString()}`);
 	res.redirect('/blocks');
 });
 
+//the command for receive a public key for a user.
 app.get('/public-key', (req, res) => {
 	res.json({ publicKey: wallet.publicKey });
 });
