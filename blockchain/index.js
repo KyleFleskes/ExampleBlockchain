@@ -19,11 +19,13 @@ class Blockchain
 {
 	
 	/*
-	 * constructs a basic chain with nothing but a single gensis block.
+	 * constructs a basic chain with nothing but a 3 gensis blocks.
 	 */
 	constructor()
     	{
         	this.chain = [Block.genesis()];
+		//this.addBlock('genesis');
+		//this.addBlock("genesis");
     	}
 	
 	/*

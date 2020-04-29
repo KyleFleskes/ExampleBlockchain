@@ -161,7 +161,8 @@ class Wallet
 	}
 	
 	/**
-	 * A static method that creates a tester wallet.
+	 * A static method that creates the wallet which rewards user's 
+	 * when they mine the tranaction pool.
 	 *
 	 * return:
 	 *	the instance of the newly created wallet.

@@ -62,8 +62,11 @@ class Transaction
 	 * the senderwallet public key and the recipient.
 	 *
 	 * param:
+	 * 	senderWallet - the user sending the transaction.
+	 * 	outputs - the display data on the transaction (new amount, sender's public key, and recipient).
 	 *
 	 * return:
+	 * 	returns the new transaction with its outputs properly stored.
 	 */
 	static transactionWithOutputs(senderWallet, outputs)
 	{
@@ -79,22 +82,24 @@ class Transaction
 	 * Creates a new transaction of cryptocurrency between users.
 	 *
 	 * param:
-	 * 	senderWallet -
-	 * 	recipient -
-	 * 	amount -
+	 * 	senderWallet - the user's wallet sending the transaction.
+	 * 	recipient - the recipient's wallet.
+	 * 	amount - the amount of currency being sent.
 	 *
 	 * return:
 	 */
 	static newTransaction(senderWallet, recipient, amount)
 	{
 		const transaction = new this();
-
+		
+		//if sending an invalid amount of currency.
 		if(amount > senderWallet.balance)
 		{
 			console.log(`Amount : ${amount} exceeds balance.`);
 			return;
 		}
-
+		
+		//creates the new transaction with the proper outputs.
 		return Transaction.transactionWithOutputs(senderWallet, [
 		{ amount: senderWallet.balance - amount, address: senderWallet.publicKey },
 		{ amount, address: recipient }	
@@ -102,9 +107,15 @@ class Transaction
 	}
 	
 	/**
+	 * 
+	 * Rewards the miner's wallet with currency specificed by MINING_REWARD.
+	 *
 	 * param:
+	 * 	minerWallet - the wallet of the miner receiving the reward.
+	 * 	blockchainWallet - the special wallet which rewards miners.
 	 *
 	 * return:
+	 * 	the new transaction which gives the miner a reward of currency.
 	 *
 	 */
 	static rewardTransaction(minerWallet, blockchainWallet)
@@ -115,9 +126,13 @@ class Transaction
 	}
 	
 	/**
-	 * param:
 	 *
-	 * return:
+	 * Imprints a indiviual transaction with the sender's information.
+	 *
+	 * param:
+	 * 	transaction - the transaction to be signed.
+	 * 	senderWallet - the wallet who will sign the transaction.
+	 *
 	 */
 	static signTransaction(transaction, senderWallet)
 	{
@@ -130,9 +145,14 @@ class Transaction
 	}
 	
 	/**
+	 * 
+	 * Checks to see if this transaction has a proper signature.
+	 *
 	 * param:
+	 * 	transaction - the transaction to be varified.
 	 *
 	 * return:
+	 * 	TRUE - verified, FALSE - not verified.	
 	 *
 	 */
 	static verifyTransaction(transaction)
