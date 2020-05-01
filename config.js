@@ -11,7 +11,7 @@
 const DIFFICULTY = 3;
 
 //how often (in milliseconds) that blocks can be put on the blockchain. 
-const MINE_RATE = 3000;
+const MINE_RATE = 10000;
 
 //how much every new user gets in currency to test the transaction pool.
 const INITIAL_BALANCE = 500;

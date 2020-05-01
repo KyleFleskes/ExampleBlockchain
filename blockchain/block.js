@@ -88,7 +88,7 @@ class Block
     	{
 		let hash, timeStamp;
         	const lastHash = lastBlock.hash;
-		let {difficulty} = lastBlock;
+		let { difficulty } = lastBlock;
        		let nonce = 0;
 		
 		//loop until hash has number of leading zeros specified by difficulty of last block.
@@ -101,7 +101,10 @@ class Block
 			difficulty = Block.adjustDifficulty(lastBlock, timeStamp);
 
 			hash = Block.hash(timeStamp, lastHash, data, nonce, difficulty);
+
 		} while(hash.substring(0, difficulty) !== '0'.repeat(difficulty));
+		
+		console.log(`\nAdded block\n`);
 
 		return new this(timeStamp, lastHash, hash, data, nonce, difficulty);
     	}	
@@ -162,11 +165,18 @@ class Block
 	 */
 	static adjustDifficulty(lastBlock, currentTime)
     	{
-		let {difficulty} = lastBlock;
+		let { difficulty } = lastBlock;
 
 		//if the block is taking less or more time than last block to mine, adjust difficulty by +/-1, respectively.
-		difficulty = lastBlock.timeStamp + MINE_RATE > currentTime ? difficulty + 1 : difficulty - 1;
+		difficulty = lastBlock.timeStamp + MINE_RATE > currentTime ? 
+			difficulty + 1 : difficulty - 1;
+
+		console.log(`Difficulty: ${difficulty}`);
 		
+		//difficulty can't be 0.
+		difficulty = (difficulty == 0) ?
+			1 : difficulty;
+
 		return difficulty;
     	}
 }
