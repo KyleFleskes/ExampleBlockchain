@@ -15,9 +15,12 @@
 
 const ChainUtil = require('../chain-util'); //needed for creating a proper hash for the blocks.
 const {DIFFICULTY, MINE_RATE} = require('../config'); //needed for receiving global varriables in config.js
+const Data = require('./data');
 
 class Block 
 {
+	
+
 	/**
 	 * 
 	 * creates a single block based off of data provided 
@@ -34,16 +37,17 @@ class Block
 	 * 		must have inorder to be valid.
 	 *
 	 */
-    	constructor(timeStamp, lastHash, hash, data, nonce, difficulty)
+    	constructor(timeStamp, lastHash, hash, name, nonce, difficulty)
     	{
-        	this.timeStamp = timeStamp;
+        	
+		this.data = new Data(name);
+		this.timeStamp = timeStamp;
         	this.lastHash = lastHash;
         	this.hash = hash;
-        	this.data = data;
 		this.nonce = nonce;
 		this.difficulty = difficulty || DIFFICULTY;
 	}
-	
+
 	/**
 	 * 
 	 * Prints all data held in current block.
@@ -57,7 +61,7 @@ class Block
     		Hash:       ${this.hash.substring(0, 10)}
     		Nonce:      ${this.nonce}
     		Difficulty: ${this.difficulty}
-    		Data:       ${this.data}`;
+    		Data:       ${this.data.toString()}`;
     	}
 	
 	/**
@@ -103,8 +107,6 @@ class Block
 			hash = Block.hash(timeStamp, lastHash, data, nonce, difficulty);
 
 		} while(hash.substring(0, difficulty) !== '0'.repeat(difficulty));
-		
-		console.log(`\nAdded block\n`);
 
 		return new this(timeStamp, lastHash, hash, data, nonce, difficulty);
     	}	
@@ -170,8 +172,6 @@ class Block
 		//if the block is taking less or more time than last block to mine, adjust difficulty by +/-1, respectively.
 		difficulty = lastBlock.timeStamp + MINE_RATE > currentTime ? 
 			difficulty + 1 : difficulty - 1;
-
-		console.log(`Difficulty: ${difficulty}`);
 		
 		//difficulty can't be 0.
 		difficulty = (difficulty == 0) ?

@@ -8,8 +8,8 @@
     "dev-test": "nodemon dev-test",
     "start": "node ./app",
     "dev": "nodemon ./app",
-    "install": "npm init -y && npm install nodemon --save-dev && npm install crypto-js --save && npm install jest --save-dev && npm install express --save && npm install body-parser --save && npm install ws --save && npm install elliptic --save && npm install uuid --save",
-    "uninstall": "npm uninstall uuid && npm uninstall elliptic && npm uninstall ws && npm uninstall body-parser && npm uninstall express && npm uninstall jest && npm uninstall crypto-js && npm uninstall nodemon"
+    "install": "npm init -y && npm install nodemon --save-dev && npm install crypto-js --save && npm install jest --save-dev && npm install express --save && npm install body-parser --save && npm install ws --save && npm install elliptic --save && npm install uuid --save && npm install multer --save",
+    "uninstall": "npm uninstall multer && npm uninstall uuid && npm uninstall elliptic && npm uninstall ws && npm uninstall body-parser && npm uninstall express && npm uninstall jest && npm uninstall crypto-js && npm uninstall nodemon"
   },
   "jest": {
     "testEnvironment": "node"
@@ -18,7 +18,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^25.3.0",
+    "jest": "^25.5.3",
     "nodemon": "^2.0.3"
   },
   "dependencies": {
@@ -26,8 +26,10 @@
     "crypto-js": "^4.0.0",
     "elliptic": "^6.5.2",
     "express": "^4.17.1",
-    "uuid": "^7.0.3",
-    "ws": "^7.2.3"
+    "multer": "^1.4.2",
+    "p5": "^1.0.0",
+    "uuid": "^8.0.0",
+    "ws": "^7.2.5"
   },
   "repository": {
     "type": "git",

@@ -16,9 +16,43 @@ const Wallet = require('../wallet');
 const TransactionPool = require('../wallet/transaction-pool');
 const Miner = require('./miner');
 
+const multer = require('multer');
+
 const HTTP_PORT = process.env.HTTP_PORT || 3001;
 
 // $ HTTP_PORT = 3002 npm run dev
+
+const storage = multer.diskStorage({
+	destination: function(req, file, cb)
+	{
+		cb(null, 'uploads/');
+	},
+
+	filename: function(req, file, cb)
+	{
+		cb(null, file.originalname);
+	}
+});
+
+const fileFilter = (req, file, cb) => {
+	
+	
+	//only accept jpeg and png files
+	if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png')
+	{
+		cb(null, true);
+	}
+	else
+	{
+		cb(new Error('bad file type'), false);
+	}
+};
+
+const upload = multer({ 
+	storage: storage, 
+	limits: { fileSize: 1024 * 1024 * 5 },
+	fileFilter: fileFilter
+});
 
 
 const app = express();
@@ -36,8 +70,11 @@ app.get('/blocks', (req, res) => {
 });
 
 //the command for adding blocks to the blockchain.
-app.post('/mine', (req, res) => {
-	const block = bc.addBlock(req.body.data);
+app.post('/mine', upload.single('testImage'), (req, res) => {
+	
+	console.log(req.file);
+	
+	const block = bc.addBlock(req.body.data/*, req.file.path*/);
 	console.log(`New block added ${block.toString()}`);
 
 	p2pServer.syncChains();

@@ -9,7 +9,7 @@
  * 	are added, validated, and replaced if needed. 
  * 	
  * 	Author: Kyle Fleskes
- * 	Lasted Updated: 4/17/2020
+ * 	Lasted Updated: 5/1/2020
  *
  */
 
@@ -24,8 +24,6 @@ class Blockchain
 	constructor()
     	{
         	this.chain = [Block.genesis()];
-		//this.addBlock('genesis');
-		//this.addBlock("genesis");
     	}
 	
 	/*
