@@ -14,6 +14,7 @@
  */
 
 const Block = require('./block');
+const Data = require('./data');
 
 class Blockchain 
 {
@@ -36,9 +37,9 @@ class Blockchain
 	 * return:
 	 * 	returns the newly added block.
 	 */
-    	addBlock(data)
+    	addBlock(name, profilePic)
     	{
-        	const block = Block.mineBlock(this.chain[this.chain.length-1], data);
+		const block = Block.mineBlock(this.chain[this.chain.length-1], name, profilePic);
         	this.chain.push(block);
 
         	return block;
@@ -72,6 +73,10 @@ class Blockchain
             		if (block.lastHash !== lastBlock.hash ||
                 		block.hash !== Block.blockHash(block))
 			{
+				console.log(`\nblock.lastHash: ${block.lastHash}\n`);
+				console.log(`lastBlock.hash: ${lastBlock.hash}\n`);
+				console.log(`\nblock.hash:            ${block.hash}\n`);
+				console.log(`Block.blockHash(block): ${Block.blockHash(block)}\n`);
 				return false;
 			}
         	}

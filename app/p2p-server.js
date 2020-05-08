@@ -35,8 +35,8 @@ class P2pServer
 	constructor(blockchain, transactionPool)
 	{
 		this.blockchain = blockchain;
-		this.blockchain.addBlock([]);
-		this.blockchain.addBlock([]);
+		this.blockchain.addBlock([], []);
+		this.blockchain.addBlock([], []);
 		this.transactionPool = transactionPool;
 		this.sockets = [];
 	}

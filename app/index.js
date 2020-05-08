@@ -70,11 +70,11 @@ app.get('/blocks', (req, res) => {
 });
 
 //the command for adding blocks to the blockchain.
-app.post('/mine', upload.single('testImage'), (req, res) => {
+app.post('/mine', upload.single('profilePic'), (req, res) => {
 	
 	console.log(req.file);
-	
-	const block = bc.addBlock(req.body.data/*, req.file.path*/);
+
+	const block = bc.addBlock(req.body.name, req.file);
 	console.log(`New block added ${block.toString()}`);
 
 	p2pServer.syncChains();

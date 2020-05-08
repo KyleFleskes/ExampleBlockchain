@@ -15,7 +15,6 @@
 
 const ChainUtil = require('../chain-util'); //needed for creating a proper hash for the blocks.
 const {DIFFICULTY, MINE_RATE} = require('../config'); //needed for receiving global varriables in config.js
-const Data = require('./data');
 
 class Block 
 {
@@ -37,10 +36,11 @@ class Block
 	 * 		must have inorder to be valid.
 	 *
 	 */
-    	constructor(timeStamp, lastHash, hash, name, nonce, difficulty)
+    	constructor(timeStamp, lastHash, hash, name, profilePic, nonce, difficulty)
     	{
         	
-		this.data = new Data(name);
+		this.name = name;
+		this.profilePic = profilePic;
 		this.timeStamp = timeStamp;
         	this.lastHash = lastHash;
         	this.hash = hash;
@@ -56,12 +56,13 @@ class Block
     	toString()
     	{
         	return `Block -
-    		Timestamp:  ${this.timeStamp}
-    		Last Hash:  ${this.lastHash.substring(0, 10)}
-    		Hash:       ${this.hash.substring(0, 10)}
-    		Nonce:      ${this.nonce}
-    		Difficulty: ${this.difficulty}
-    		Data:       ${this.data.toString()}`;
+    		Timestamp:   ${this.timeStamp}
+    		Last Hash:   ${this.lastHash.substring(0, 10)}
+    		Hash:        ${this.hash.substring(0, 10)}
+    		Nonce:       ${this.nonce}
+    		Difficulty:  ${this.difficulty}
+    		Name:        ${this.name}
+		Profile Pic: ${this.profilePic}`;
     	}
 	
 	/**
@@ -74,7 +75,7 @@ class Block
 	 */
     	static genesis()
     	{
-        	return new this('Genesis time', '------', 'f1r57-h45h', [], 0, DIFFICULTY);
+        	return new this('Genesis time', '------', 'f1r57-h45h', [], [], 0, DIFFICULTY);
     	}
 	
 	/**
@@ -88,7 +89,7 @@ class Block
 	 * 	the newly created block.
 	 *
 	 */
-    	static mineBlock(lastBlock, data)
+    	static mineBlock(lastBlock, name, profilePic)
     	{
 		let hash, timeStamp;
         	const lastHash = lastBlock.hash;
@@ -104,11 +105,11 @@ class Block
 
 			difficulty = Block.adjustDifficulty(lastBlock, timeStamp);
 
-			hash = Block.hash(timeStamp, lastHash, data, nonce, difficulty);
+			hash = Block.hash(timeStamp, lastHash, name, profilePic, nonce, difficulty);
 
 		} while(hash.substring(0, difficulty) !== '0'.repeat(difficulty));
 
-		return new this(timeStamp, lastHash, hash, data, nonce, difficulty);
+		return new this(timeStamp, lastHash, hash, name, profilePic, nonce, difficulty);
     	}	
 	
 	/**
@@ -128,9 +129,10 @@ class Block
 	 * 	the hash value based on the provided information.
 	 *
 	 */
-    	static hash(timeStamp, lastHash, data, nonce, difficulty)
+    	static hash(timeStamp, lastHash, name, profilePic, nonce, difficulty)
     	{
-        	return ChainUtil.hash(`${timeStamp}${lastHash}${data}${nonce}${difficulty}`).toString();
+        	//console.log(`\n${JSON.stringify(profilePic)}\n`);
+		return ChainUtil.hash(`${timeStamp}${lastHash}${name}${JSON.stringify(profilePic)}${nonce}${difficulty}`).toString();
     	}
 	
 	/**
@@ -146,8 +148,8 @@ class Block
 	 */
 	static blockHash(block)
     	{
-        	const {timeStamp, lastHash, data, nonce, difficulty} = block;
-        	return Block.hash(timeStamp, lastHash, data, nonce, difficulty);
+        	const {timeStamp, lastHash, name, profilePic, nonce, difficulty} = block;
+        	return Block.hash(timeStamp, lastHash, name, profilePic, nonce, difficulty);
     	}	
 	
 	/**
